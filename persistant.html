@@ -3,35 +3,43 @@
 
     window.onload = function () {
         function slideCarousel(direction) {
-            const allCarouselItems = [...PERSISTENTAPP.carouselNav];
-            const selected = document.querySelector('.nav-container li a.selected');
-            let selectedIndex = allCarouselItems.indexOf(selected);
+            try{
+                const allCarouselItems = [...PERSISTENTAPP.carouselNav];
+                const selected = document.querySelector('.nav-container li a.selected');
+                let selectedIndex = allCarouselItems.indexOf(selected);
 
-            if(direction === 'left'){
-                if (selectedIndex > 0) {
-                    allCarouselItems[selectedIndex - 1].click();
-                } else {
-                    allCarouselItems[allCarouselItems.length - 1].click();
+                if(direction === 'left'){
+                    if (selectedIndex > 0) {
+                        allCarouselItems[selectedIndex - 1].click();
+                    } else {
+                        allCarouselItems[allCarouselItems.length - 1].click();
+                    }
+                }else{
+                    if (selectedIndex < allCarouselItems.length - 1) {
+                        allCarouselItems[selectedIndex + 1].click();
+                    } else {
+                        allCarouselItems[0].click();
+                    }
                 }
-            }else{
-                if (selectedIndex < allCarouselItems.length - 1) {
-                    allCarouselItems[selectedIndex + 1].click();
-                } else {
-                    allCarouselItems[0].click();
-                }
+            }catch{
+                console.log('Catch carousel', );
             }
         }
 
         function isElementFullyVisible (element) {
-            var position = element.getBoundingClientRect();
+            try{
+                var position = element.getBoundingClientRect();
 
-            // Is fully visible?
-            if(position.top >= 0 && position.bottom <= window.innerHeight) {
-                return true;
-            }else{
-                return false;
+                // Is fully visible?
+                if(position.top >= 0 && position.bottom <= window.innerHeight) {
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch{
+                
             }
-
             /* Example for partially visible
                 // if(position.top < window.innerHeight && position.bottom >= 0) {
             */
@@ -73,12 +81,10 @@
                 });
 
                 // Start interval
-                setInterval(function () {
-                    try{
-                        if(isElementFullyVisible(PERSISTENTAPP.navContainer)){
-                            slideCarousel('right');
-                        }
-                    }catch{}
+                setInterval(function () {                    
+                    if(isElementFullyVisible(PERSISTENTAPP.navContainer)){
+                        slideCarousel('right');
+                    }
                 }, 6000);
             }catch{
                 console.log('Caught Carousel early-load')
